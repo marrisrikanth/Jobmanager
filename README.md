@@ -20,3 +20,13 @@ openssl -q -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 365 -
 
 go build -ldflags="-s -w" . to remove symbol table and DWARF debugging information for production.
 
+
+Testing:
+To start the jobmanager
+export API_KEY=mysecretkey123
+go run .
+
+$curl -X POST http://localhost:8080/jobs -d {"command": "date;sleep 4;date"} -H Content-Type: application/json -H X-API-KEY: mysecretkey123
+
+$curl -X GET http://localhost:8080/jobs -H X-API-KEY: mysecretkey123
+curl -X GET http://localhost:8080/job/cancel?id=a4aedba8-b8of-42a7-a80f-5df5f11717d6 -H X-API-KEY: mysecretkey123
